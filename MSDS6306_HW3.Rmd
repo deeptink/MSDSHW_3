@@ -1,0 +1,199 @@
+##### 1.GitHub Cloning
+
+Steps involved in cloning GitHub repository from "https://github.com/caesar0301/awesome-public-datasets" to local repository.
+
+1. Navigate to current directory
+```{}
+cd "/Users/dee/Data Science/"
+```
+
+2. Make new directories
+```{}
+mkdir GitHub
+cd GitHub
+mkdir MSDS6306_HW3
+cd MSDS6306_HW3
+```
+3. Clone the Github repository from "https://github.com/caesar0301/awesome-public-datasets" to local repository.
+```{}
+git clone "https://github.com/awesomedata/awesome-public-datasets.git"
+```
+
+##### 2.Data Summary
+
+```{r}
+# Assigning the variable
+url="/Users/dee/Data Science/GitHub/MSDS6306_HW3/awesome-public-datasets/Datasets/titanic.csv"
+```
+
+```{r}
+# Read CSV to R
+df <- read.csv(file=url, header=TRUE, sep=",")
+```
+
+```{r}
+# Verify few records from titanic.csv file
+names(df)
+```
+
+```{r}
+# Verify few records from titanic.csv file
+head(df)
+```
+
+```{r}
+# Number of females and male in titanic.csv file
+summary(df$Sex)
+```
+
+```{r}
+# Frequency of Female vs Male
+barplot(table(df$Sex), main="Frequency of Sex", xlab="Sex",ylab="Count",col="blue")
+```
+
+```{r}
+# Calculate means for Age and veriying the value is real number
+Age <- data.frame(df$Age)
+mn <- list(mean=mean)
+AgeMean<-sapply(mn,function(x) sapply(Age,x,na.rm=T))
+AgeMean # Display Mean
+class(AgeMean) # Class
+```
+
+```{r}
+# Calculate means for Fare and veriying the value is real number
+Fare <- data.frame(df$Fare)
+mn <- list(mean=mean)
+FareMean<-sapply(mn,function(x) sapply(Fare,x,na.rm=T))
+FareMean # Display Mean
+class(FareMean) # Class
+```
+
+```{r}
+# In HW, it is mentioned as "Survival"" but it is "Survived".
+# Calculate means for Survived and veriying the value is real number
+Survival <- data.frame(df$Survived)
+mn <- list(mean=mean)
+SurvivalMean<-sapply(mn,function(x) sapply(Survival,x,na.rm=T))
+SurvivalMean # Display Mean
+class(SurvivalMean) # Class
+```
+
+
+##### 3.Function Building
+```{r}
+Func_SleepData <- function(y) {
+# Downloading sleepdata
+sleepdata <- read.csv("http://talklab.psy.gla.ac.uk/L1_labs/lab_1/homework/sleep_data_01.csv")
+# Dimensions
+dim(sleepdata)
+# Sample data read
+head(sleepdata)
+
+# Calculating Median of Age
+Age <- data.frame(sleepdata$Age)
+md <- list(median=median)
+# removing NA
+AgeMedian<-sapply(md,function(x) sapply(Age,x,na.rm=T))
+AgeMedian
+
+# Calculating minimum and maximum of Duration
+Duration <- data.frame(sleepdata$Duration)
+dur_min <- list(min=min)
+dur_minc <- sapply(dur_min, function(x) sapply(Duration, x, na.rm=T))
+dur_minc
+
+dur_max <- list(max=max)
+dur_maxc <- sapply(dur_max, function(x) sapply(Duration, x, na.rm=T))
+dur_maxc
+
+# Calculating Mean and Standard Deviation
+RSES <- data.frame(sleepdata$RSES)
+mn <- list(mean=mean)
+rses_mn <-sapply(mn, function(x) sapply(RSES,x,na.rm=T))
+rm(x)
+rses_mn
+#y=as.numeric(0)
+#stan <- list(sd=sd)
+#rses_s <-sapply(stan, function(y) sapply(RSES,y,na.rm=T))
+#rses_sd
+
+# Calculating range
+rangedur=dur_maxc-dur_minc
+rangedur
+
+# Creating a data frame
+report <- data.frame(AgeMedian,rses_mn/5,rangedur)
+report
+
+
+#Rename columns in dataframe & display
+library(plyr)
+names(report)[names(report)=="AgeMedian"] <- "MedianAge"
+names(report)[names(report)=="rses_mn.5"] <- "SelfEsteem"
+names(report)[names(report)=="rangedur"] <- "DurationRange"
+report=(round(report, digits = 2))
+rownames(report) <- c()
+return(report)
+}
+
+Func_SleepData(0)
+```
+
+##### 4.FiveThirtyEight Data
+
+```{r}
+#install.packages("remotes")
+library(remotes)
+#remotes::install_github("rudeboybert/fivethirtyeight", build_vignettes = TRUE)
+#install.packages("fivethirtyeight")
+library("fivethirtyeight")
+d <-(data(package="fivethirtyeight"))
+
+x <- as.vector(d)
+x <- d$results[,"Item"]
+DS22 <- x[22]
+# 22nd dataset 
+df <- DS22
+df <- as.data.frame(college_recent_grads)
+#View Data
+head(df)
+
+# dimenstion
+dim(df)
+
+# Column Names data 22
+names(df)
+```
+
+##### 5.Data Summary
+
+```{r}
+#Get the column names and number of columns
+names(df)
+
+#Get number of columns in the dataset
+ncol(df)
+
+# Count of Unique Major Category
+datadump <- as.data.frame(college_recent_grads)
+unique(datadump$major_category)
+UniqueMaj <- unique(datadump$major_category)
+# Get Unique rows
+NROW(UniqueMaj)
+
+library(plyr)
+major_count <- count(datadump, 'major_category')
+# Class of major_count
+class(major_count)
+#Output of data frame - major_count
+major_count
+
+```
+
+
+##### 6.Codebook
+```{r}
+#Link to github 
+#https://github.com/deeptink/MSDSHW_3
+```
